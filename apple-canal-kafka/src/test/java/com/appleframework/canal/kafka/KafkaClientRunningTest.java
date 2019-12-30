@@ -1,10 +1,11 @@
 package com.appleframework.canal.kafka;
 
 /**
- * Kafka consumer获取Message的测试例子
+/**
+ * Kafka client consumer
  *
- * @author machengyuan @ 2018-6-12
- * @version 1.0.0
+ * @author cruise.xu @ 2019-12-30
+ * @version 0.0.1
  */
 public class KafkaClientRunningTest {
 

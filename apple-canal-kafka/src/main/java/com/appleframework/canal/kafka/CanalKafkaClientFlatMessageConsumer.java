@@ -13,10 +13,10 @@ import com.appleframework.canal.service.BinLogEventHandler;
 import com.appleframework.canal.service.BinLogEventHandlerFactory;
 
 /**
- * Kafka client example
+ * Kafka client consumer
  *
- * @author machengyuan @ 2018-6-12
- * @version 1.0.0
+ * @author cruise.xu @ 2019-12-30
+ * @version 0.0.1
  */
 public class CanalKafkaClientFlatMessageConsumer implements CanalKafkaClientConsumer {
 
