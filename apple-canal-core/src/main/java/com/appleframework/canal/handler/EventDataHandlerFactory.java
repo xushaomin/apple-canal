@@ -37,8 +37,8 @@ public class EventDataHandlerFactory {
 				dto.setBefore(updateRow.getBeforeRowMap());
 			}
 		} else if (data instanceof InsertRowsDTO) {
-			InsertRowsDTO writeData = (InsertRowsDTO) data;
-			List<Map<String, String>> list = writeData.getRowMaps();
+			InsertRowsDTO insertData = (InsertRowsDTO) data;
+			List<Map<String, String>> list = insertData.getRowMaps();
 			for (Map<String, String> mdata : list) {
 				dto = new EventDataDTO(DatabaseEvent.INSERT_ROWS, database, table);
 				dto.setData(mdata);
@@ -77,8 +77,8 @@ public class EventDataHandlerFactory {
 				dto.setBefore(updateRow.getBeforeRowMap());
 			}
 		} else if (data instanceof InsertRowsDTO) {
-			InsertRowsDTO writeData = (InsertRowsDTO) data;
-			List<Map<String, String>> list = writeData.getRowMaps();
+			InsertRowsDTO insertData = (InsertRowsDTO) data;
+			List<Map<String, String>> list = insertData.getRowMaps();
 			for (Map<String, String> mdata : list) {
 				dto = new EventDataDTO(DatabaseEvent.INSERT_ROWS, database, table);
 				dto.setData(mdata);
