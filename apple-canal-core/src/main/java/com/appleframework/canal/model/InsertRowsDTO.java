@@ -30,6 +30,6 @@ public class InsertRowsDTO extends EventBaseDTO {
 
 	@Override
 	public String toString() {
-		return "WriteRowsDTO{" + "rowMaps=" + rowMaps + "} " + super.toString();
+		return "InsertRowsDTO{" + "rowMaps=" + rowMaps + "} " + super.toString();
 	}
 }

@@ -18,7 +18,7 @@ public class BinLogEventHandlerFactory {
 
 	private static BinLogUpdateEventHandler binLogUpdateEventHandler = new BinLogUpdateEventHandler();
 
-	private static BinLogInsertEventHandler binLogWriteEventHandler = new BinLogInsertEventHandler();
+	private static BinLogInsertEventHandler binLogInsertEventHandler = new BinLogInsertEventHandler();
 
 	private static BinLogDeleteEventHandler binLogDeleteEventHandler = new BinLogDeleteEventHandler();
 	
@@ -29,7 +29,7 @@ public class BinLogEventHandlerFactory {
 		if (eventType.name() == CanalEntry.EventType.UPDATE.name()) {
 			return binLogUpdateEventHandler;
 		} else if (eventType.name() == CanalEntry.EventType.INSERT.name()) {
-			return binLogWriteEventHandler;
+			return binLogInsertEventHandler;
 		} else if (eventType.name() == CanalEntry.EventType.DELETE.name()) {
 			return binLogDeleteEventHandler;
 		} else {
@@ -43,7 +43,7 @@ public class BinLogEventHandlerFactory {
 		if (CanalEntry.EventType.UPDATE.name().equalsIgnoreCase(eventType)) {
 			return binLogUpdateEventHandler;
 		} else if (CanalEntry.EventType.INSERT.name().equalsIgnoreCase(eventType)) {
-			return binLogWriteEventHandler;
+			return binLogInsertEventHandler;
 		} else if (CanalEntry.EventType.DELETE.name().equalsIgnoreCase(eventType)) {
 			return binLogDeleteEventHandler;
 		} else {

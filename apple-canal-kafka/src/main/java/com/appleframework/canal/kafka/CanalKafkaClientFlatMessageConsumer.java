@@ -87,18 +87,19 @@ public class CanalKafkaClientFlatMessageConsumer implements CanalKafkaClientCons
 				while (running) {
 					try {
 						List<FlatMessage> messages = connector.getFlatList(100L, TimeUnit.MILLISECONDS); // 获取message
-						if (messages == null) {
+						if (messages == null || messages.size() == 0) {
+							Thread.sleep(5);
 							continue;
 						}
 						for (FlatMessage message : messages) {
 							long batchId = message.getId();
 							int size = message.getData().size();
 							if (batchId == -1 || size == 0) {
-								// try {
-								// Thread.sleep(1000);
-								// } catch (InterruptedException e) {
-								// }
-								//processMessage(message);
+								try {
+									Thread.sleep(1000);
+								} catch (InterruptedException e) {
+								}
+								logger.warn("the message is error ");
 							} else {
 								BinLogEventHandler eventHandler = BinLogEventHandlerFactory.getHandler(message.getType());
 								eventHandler.handle(message);

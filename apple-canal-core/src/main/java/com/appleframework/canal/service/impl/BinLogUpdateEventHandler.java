@@ -9,15 +9,17 @@ import com.alibaba.otter.canal.protocol.FlatMessage;
 import com.alibaba.otter.canal.protocol.Message;
 import com.appleframework.canal.enums.DatabaseEvent;
 import com.appleframework.canal.model.EventBaseDTO;
+import com.appleframework.canal.model.FlatMessageJson;
 import com.appleframework.canal.model.UpdateRow;
 import com.appleframework.canal.model.UpdateRowsDTO;
 import com.appleframework.canal.service.BinLogEventHandler;
+import com.appleframework.canal.util.JsonUtil;
 
 @Service
 public class BinLogUpdateEventHandler extends BinLogEventHandler {
 
     @Override
-	protected EventBaseDTO formatData(Message message) {
+    public EventBaseDTO formatData(Message message) {
         return null;
 	}
 
@@ -37,5 +39,22 @@ public class BinLogUpdateEventHandler extends BinLogEventHandler {
         updateRowsDTO.setRows(rows);
         return updateRowsDTO;
     }
+
+	@Override
+	public EventBaseDTO formatData(FlatMessageJson message) {
+		List<UpdateRow> rows = new ArrayList<UpdateRow>();     
+        
+		UpdateRow row = new UpdateRow();
+        row.setAfterRowMap(JsonUtil.objectToMap(message.getData().getJSONObject(0)));
+        row.setBeforeRowMap(JsonUtil.objectToMap(message.getOld().getJSONObject(0)));
+        rows.add(row);
+        
+        UpdateRowsDTO updateRowsDTO = new UpdateRowsDTO();
+        updateRowsDTO.setEventType(DatabaseEvent.UPDATE_ROWS);
+        updateRowsDTO.setDatabase(message.getDatabase());
+        updateRowsDTO.setTable(message.getTable());
+        updateRowsDTO.setRows(rows);
+        return updateRowsDTO;
+	}
 
 }

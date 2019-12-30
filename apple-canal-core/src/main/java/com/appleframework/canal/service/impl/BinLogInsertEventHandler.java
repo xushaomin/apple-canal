@@ -6,14 +6,16 @@ import com.alibaba.otter.canal.protocol.FlatMessage;
 import com.alibaba.otter.canal.protocol.Message;
 import com.appleframework.canal.enums.DatabaseEvent;
 import com.appleframework.canal.model.EventBaseDTO;
+import com.appleframework.canal.model.FlatMessageJson;
 import com.appleframework.canal.model.InsertRowsDTO;
 import com.appleframework.canal.service.BinLogEventHandler;
+import com.appleframework.canal.util.JsonUtil;
 
 @Service
 public class BinLogInsertEventHandler extends BinLogEventHandler {
 
 	@Override
-	protected EventBaseDTO formatData(FlatMessage message) {
+	public EventBaseDTO formatData(FlatMessage message) {
 		InsertRowsDTO insertRowsDTO = new InsertRowsDTO();
 		insertRowsDTO.setEventType(DatabaseEvent.INSERT_ROWS);
 		insertRowsDTO.setDatabase(message.getDatabase());
@@ -23,8 +25,18 @@ public class BinLogInsertEventHandler extends BinLogEventHandler {
 	}
 
 	@Override
-	protected EventBaseDTO formatData(Message message) {
+	public EventBaseDTO formatData(Message message) {
 		return null;
+	}
+
+	@Override
+	public EventBaseDTO formatData(FlatMessageJson message) {
+		InsertRowsDTO insertRowsDTO = new InsertRowsDTO();
+		insertRowsDTO.setEventType(DatabaseEvent.INSERT_ROWS);
+		insertRowsDTO.setDatabase(message.getDatabase());
+		insertRowsDTO.setTable(message.getTable());
+		insertRowsDTO.setRowMaps(JsonUtil.arrayToList(message.getData()));
+		return insertRowsDTO;
 	}
 
 }

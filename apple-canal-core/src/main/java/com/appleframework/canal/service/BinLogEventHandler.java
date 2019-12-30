@@ -4,6 +4,8 @@ import com.alibaba.otter.canal.protocol.FlatMessage;
 import com.alibaba.otter.canal.protocol.Message;
 import com.appleframework.canal.handler.EventDataHandlerFactory;
 import com.appleframework.canal.model.EventBaseDTO;
+import com.appleframework.canal.model.EventDataDTO;
+import com.appleframework.canal.model.FlatMessageJson;
 
 public abstract class BinLogEventHandler {
 	
@@ -13,20 +15,26 @@ public abstract class BinLogEventHandler {
 	 * @param event
 	 */
 	public void handle(FlatMessage message) {
-		//String database = message.getDatabase();
-		//String table = message.getTable();
-		//if(!this.filter(database, table)) {
-			EventBaseDTO eventBaseDTO = formatData(message);
-			if(null != eventBaseDTO) {
-				EventDataHandlerFactory.handle(eventBaseDTO);
-			}
-		//}
+		EventBaseDTO eventBaseDTO = formatData(message);
+		if(null != eventBaseDTO) {
+			EventDataHandlerFactory.handle(eventBaseDTO);
+		}
 	}
 	
-	//private EventBaseDTO formatEventData(CanalEntry.EventType eventType, FlatMessage message) {
-	//	BinLogEventHandler handler = BinLogEventHandlerFactory.getHandler(eventType);
-	//	return handler.formatData(message);
-	//}
+	public void handle(FlatMessageJson message) {
+		EventBaseDTO eventBaseDTO = formatData(message);
+		if(null != eventBaseDTO) {
+			EventDataHandlerFactory.handle(eventBaseDTO);
+		}
+	}
+	
+	public EventDataDTO formatEventData(FlatMessageJson message) {
+		EventBaseDTO eventBaseDTO = formatData(message);
+		if(null != eventBaseDTO) {
+			return EventDataHandlerFactory.formatEventData(eventBaseDTO);
+		}
+		return null;
+	}
 
 	/**
 	 * 格式化参数格式
@@ -34,7 +42,7 @@ public abstract class BinLogEventHandler {
 	 * @param event
 	 * @return 格式化后的string
 	 */
-	protected abstract EventBaseDTO formatData(FlatMessage message);
+	public abstract EventBaseDTO formatData(FlatMessage message);
 	
 	/**
 	 * 格式化参数格式
@@ -42,7 +50,16 @@ public abstract class BinLogEventHandler {
 	 * @param event
 	 * @return 格式化后的string
 	 */
-	protected abstract EventBaseDTO formatData(Message message);
+	public abstract EventBaseDTO formatData(FlatMessageJson message);
+
+	
+	/**
+	 * 格式化参数格式
+	 *
+	 * @param event
+	 * @return 格式化后的string
+	 */
+	public abstract EventBaseDTO formatData(Message message);
 	
 	/**
      * 筛选出关注某事件的应用列表

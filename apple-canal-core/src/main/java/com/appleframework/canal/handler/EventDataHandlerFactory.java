@@ -25,7 +25,6 @@ public class EventDataHandlerFactory {
 	private static Map<String, List<EventDataHandler>> handlerMap = new HashMap<String, List<EventDataHandler>>();
 
 	public static void handle(EventBaseDTO data) {
-
 		String database = data.getDatabase();
 		String table = data.getTable();
 		EventDataDTO dto = null;
@@ -63,7 +62,38 @@ public class EventDataHandlerFactory {
 				}
 			}
 		}
-
+	}
+	
+	public static EventDataDTO formatEventData(EventBaseDTO data) {
+		String database = data.getDatabase();
+		String table = data.getTable();
+		EventDataDTO dto = null;
+		if (data instanceof UpdateRowsDTO) {
+			UpdateRowsDTO updateData = (UpdateRowsDTO) data;
+			List<UpdateRow> list = updateData.getRows();
+			for (UpdateRow updateRow : list) {
+				dto = new EventDataDTO(DatabaseEvent.UPDATE_ROWS, database, table);
+				dto.setData(updateRow.getAfterRowMap());
+				dto.setBefore(updateRow.getBeforeRowMap());
+			}
+		} else if (data instanceof InsertRowsDTO) {
+			InsertRowsDTO writeData = (InsertRowsDTO) data;
+			List<Map<String, String>> list = writeData.getRowMaps();
+			for (Map<String, String> mdata : list) {
+				dto = new EventDataDTO(DatabaseEvent.INSERT_ROWS, database, table);
+				dto.setData(mdata);
+			}
+		} else if (data instanceof DeleteRowsDTO) {
+			DeleteRowsDTO deleteData = (DeleteRowsDTO) data;
+			List<Map<String, String>> list = deleteData.getRowMaps();
+			for (Map<String, String> mdata : list) {
+				dto = new EventDataDTO(DatabaseEvent.DELETE_ROWS, database, table);
+				dto.setData(mdata);
+			}
+		} else {
+			log.debug(data.toString());
+		}
+		return dto;
 	}
 	
 	public static void addHandler(String database, String table, EventDataHandler handler) {
