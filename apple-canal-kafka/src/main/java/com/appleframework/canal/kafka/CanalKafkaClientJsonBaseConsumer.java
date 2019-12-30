@@ -22,7 +22,7 @@ public abstract class CanalKafkaClientJsonBaseConsumer {
 	
 	public abstract void onMessage(EventDataDTO dto);
 	
-	@KafkaListener(topics = "#{'${apple.canal.consumer.topics}'.split(',')}", concurrency = "${apple.canal.consumer.concurrency:1}")
+	@KafkaListener(topics = "#{'${spring.kafka.consumer.topics}'.split(',')}", concurrency = "${apple.canal.consumer.concurrency:1}")
 	public void run(String message) {
 		try {
 			if (logger.isDebugEnabled()) {
