@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 import com.appleframework.canal.kafka.CanalKafkaClientConfig;
 import com.appleframework.canal.kafka.CanalKafkaClientConsumer;
 import com.appleframework.canal.kafka.CanalKafkaClientFlatMessageConsumer;
+import com.appleframework.canal.kafka.CanalKafkaClientMessageConsumer;
 
 /**
  * 动态数据源核心自动配置类
@@ -46,21 +47,19 @@ public class CanalKafkaClientConsumerAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
     public CanalKafkaClientConsumer registCanalKafkaClientConsumer(){
-		
+    	CanalKafkaClientConfig.setServers(properties.getServers());
+    	CanalKafkaClientConfig.setGroupId(properties.getGroupId());
+    	CanalKafkaClientConfig.setTopic(properties.getTopic());
+    	CanalKafkaClientConfig.setBatchSize(properties.getBatchSize());
+    	CanalKafkaClientConfig.setPartition(properties.getPartition());
+    	CanalKafkaClientConsumer consumer = null;
 		if(properties.getFlatMessage()) {
-	    	CanalKafkaClientConfig.setServers(properties.getServers());
-	    	CanalKafkaClientConfig.setGroupId(properties.getGroupId());
-	    	CanalKafkaClientConfig.setTopic(properties.getTopic());
-	    	CanalKafkaClientConfig.setBatchSize(properties.getBatchSize());
-	    	CanalKafkaClientConfig.setPartition(properties.getPartition());
-	    	
-	    	CanalKafkaClientConsumer consumer = new CanalKafkaClientFlatMessageConsumer();
-	    	consumer.start();
-
-	        return consumer;
+	    	consumer = new CanalKafkaClientFlatMessageConsumer();
 		}
 		else {
-			return null;
+			consumer = new CanalKafkaClientMessageConsumer();
 		}
+    	consumer.start();
+    	return consumer;
     }
 }

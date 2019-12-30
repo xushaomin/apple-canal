@@ -1,5 +1,7 @@
 package com.appleframework.canal.kafka;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -30,8 +32,10 @@ public abstract class CanalKafkaClientJsonBaseConsumer {
 			}
 	        FlatMessageJson flatMessageJson = JSONObject.parseObject(message, FlatMessageJson.class);
 			BinLogEventHandler eventHandler = BinLogEventHandlerFactory.getHandler(flatMessageJson.getType());
-			EventDataDTO dto = eventHandler.formatEventData(flatMessageJson);
-			onMessage(dto);
+			List<EventDataDTO> list = eventHandler.formatEventData(flatMessageJson);
+			for (EventDataDTO dto : list) {
+				onMessage(dto);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

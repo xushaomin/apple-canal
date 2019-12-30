@@ -8,9 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.alibaba.otter.canal.client.kafka.KafkaCanalConnector;
-import com.alibaba.otter.canal.protocol.FlatMessage;
-import com.appleframework.canal.service.BinLogEventHandler;
-import com.appleframework.canal.service.BinLogEventHandlerFactory;
+import com.alibaba.otter.canal.protocol.CanalEntry;
+import com.alibaba.otter.canal.protocol.Message;
 
 /**
  * Kafka client consumer
@@ -18,9 +17,9 @@ import com.appleframework.canal.service.BinLogEventHandlerFactory;
  * @author cruise.xu @ 2019-12-30
  * @version 0.0.1
  */
-public class CanalKafkaClientFlatMessageConsumer implements CanalKafkaClientConsumer {
+public class CanalKafkaClientMessageConsumer implements CanalKafkaClientConsumer {
 
-	protected final static Logger logger = LoggerFactory.getLogger(CanalKafkaClientFlatMessageConsumer.class);
+	protected final static Logger logger = LoggerFactory.getLogger(CanalKafkaClientMessageConsumer.class);
 
 	private KafkaCanalConnector connector;
 
@@ -39,7 +38,7 @@ public class CanalKafkaClientFlatMessageConsumer implements CanalKafkaClientCons
 			connector = new KafkaCanalConnector(
 					CanalKafkaClientConfig.getServers(), CanalKafkaClientConfig.getTopic(), 
 					CanalKafkaClientConfig.getPartition(), CanalKafkaClientConfig.getGroupId(), 
-					CanalKafkaClientConfig.getBatchSize(), true);
+					CanalKafkaClientConfig.getBatchSize(), false);
 			logger.info("## the canal kafka consumer is running now ......");
 		} catch (Throwable e) {
 			logger.error("## Something goes wrong when starting up the kafka consumer:", e);
@@ -86,14 +85,14 @@ public class CanalKafkaClientFlatMessageConsumer implements CanalKafkaClientCons
 				connector.subscribe();
 				while (running) {
 					try {
-						List<FlatMessage> messages = connector.getFlatList(100L, TimeUnit.MILLISECONDS);
+						List<Message> messages = connector.getList(100L, TimeUnit.MILLISECONDS);
 						if (messages == null || messages.size() == 0) {
 							Thread.sleep(5);
 							continue;
 						}
-						for (FlatMessage message : messages) {
+						for (Message message : messages) {
 							long batchId = message.getId();
-							int size = message.getData().size();
+							int size = message.getEntries().size();
 							if (batchId == -1 || size == 0) {
 								try {
 									Thread.sleep(1000);
@@ -101,8 +100,7 @@ public class CanalKafkaClientFlatMessageConsumer implements CanalKafkaClientCons
 								}
 								logger.warn("the message is error ");
 							} else {
-								BinLogEventHandler eventHandler = BinLogEventHandlerFactory.getHandler(message.getType());
-								eventHandler.handle(message);
+								handleMessage(message);
 							}
 						}
 						connector.ack();
@@ -118,4 +116,21 @@ public class CanalKafkaClientFlatMessageConsumer implements CanalKafkaClientCons
 		connector.unsubscribe();
 		connector.disconnect();
 	}
+	
+    public void handleMessage(Message message) {
+        List<CanalEntry.Entry> entries = message.getEntries();
+        for (CanalEntry.Entry entry : entries) {
+            if (entry.getEntryType().equals(CanalEntry.EntryType.ROWDATA)) {
+                try {
+
+                } catch (Exception e) {
+                    throw new RuntimeException("parse event has an error , data:" + entry.toString(), e);
+                }
+            }
+        }
+    }
+    
+
+
+	
 }

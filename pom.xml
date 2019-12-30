@@ -61,6 +61,18 @@
 						<groupId>org.springframework</groupId>
   						<artifactId>spring-orm</artifactId>
 					</exclusion>
+					<exclusion>
+						<groupId>org.apache.zookeeper</groupId>
+  						<artifactId>zookeeper</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>io.netty</groupId>
+  						<artifactId>netty-all</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.101tec</groupId>
+  						<artifactId>zkclient</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 			
@@ -68,6 +80,24 @@
 				<groupId>com.alibaba.otter</groupId>
 				<artifactId>canal.client</artifactId>
 				<version>${canal.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>org.springframework</groupId>
+  						<artifactId>spring-orm</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.apache.zookeeper</groupId>
+  						<artifactId>zookeeper</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>io.netty</groupId>
+  						<artifactId>netty-all</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.101tec</groupId>
+  						<artifactId>zkclient</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 		
 			<dependency>

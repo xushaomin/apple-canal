@@ -1,5 +1,7 @@
 package com.appleframework.canal.service;
 
+import java.util.List;
+
 import com.alibaba.otter.canal.protocol.FlatMessage;
 import com.alibaba.otter.canal.protocol.Message;
 import com.appleframework.canal.handler.EventDataHandlerFactory;
@@ -28,7 +30,7 @@ public abstract class BinLogEventHandler {
 		}
 	}
 	
-	public EventDataDTO formatEventData(FlatMessageJson message) {
+	public List<EventDataDTO> formatEventData(FlatMessageJson message) {
 		EventBaseDTO eventBaseDTO = formatData(message);
 		if(null != eventBaseDTO) {
 			return EventDataHandlerFactory.formatEventData(eventBaseDTO);
