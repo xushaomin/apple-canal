@@ -73,6 +73,7 @@ public class EventDataHandlerFactory {
 			list = new ArrayList<EventDataHandler>();
 		}
 		list.add(handler);
+		handlerMap.put(key, list);
 	}
 	
 	private static String getHandlerKey(String database, String table) {

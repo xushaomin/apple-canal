@@ -6,15 +6,11 @@
 	<parent>
 		<groupId>com.appleframework.canal</groupId>
 		<artifactId>apple-canal</artifactId>
-		<version>0.2.4.RELEASE</version>
+		<version>0.0.1.RELEASE</version>
 	</parent>
 	<artifactId>apple-canal-core</artifactId>
 	<name>apple-canal-core</name>
 	<url>http://maven.apache.org</url>
-
-	<properties>
-		<canal.version>1.1.4</canal.version>
-	</properties>
 	
 	<dependencies>
 		<dependency>
@@ -43,7 +39,6 @@
 		<dependency>
   			<groupId>com.alibaba.otter</groupId>
   			<artifactId>canal.protocol</artifactId>
-  			<version>${canal.version}</version>
 		</dependency>
 				
 	</dependencies>

@@ -40,11 +40,11 @@ public class BinLogEventHandlerFactory {
 	
 	public static BinLogEventHandler getHandler(String eventType) {
 		// 考虑到状态映射的问题，只在增删改是更新位置
-		if (eventType == CanalEntry.EventType.UPDATE.name()) {
+		if (CanalEntry.EventType.UPDATE.name().equalsIgnoreCase(eventType)) {
 			return binLogUpdateEventHandler;
-		} else if (eventType == CanalEntry.EventType.INSERT.name()) {
+		} else if (CanalEntry.EventType.INSERT.name().equalsIgnoreCase(eventType)) {
 			return binLogWriteEventHandler;
-		} else if (eventType == CanalEntry.EventType.DELETE.name()) {
+		} else if (CanalEntry.EventType.DELETE.name().equalsIgnoreCase(eventType)) {
 			return binLogDeleteEventHandler;
 		} else {
 			logger.debug("不处理事件,{}", eventType);

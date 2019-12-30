@@ -13,14 +13,14 @@ public abstract class BinLogEventHandler {
 	 * @param event
 	 */
 	public void handle(FlatMessage message) {
-		String database = message.getDatabase();
-		String table = message.getTable();
-		if(!this.filter(database, table)) {
+		//String database = message.getDatabase();
+		//String table = message.getTable();
+		//if(!this.filter(database, table)) {
 			EventBaseDTO eventBaseDTO = formatData(message);
 			if(null != eventBaseDTO) {
 				EventDataHandlerFactory.handle(eventBaseDTO);
 			}
-		}
+		//}
 	}
 	
 	//private EventBaseDTO formatEventData(CanalEntry.EventType eventType, FlatMessage message) {

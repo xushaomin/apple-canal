@@ -18,7 +18,7 @@ import com.appleframework.canal.service.BinLogEventHandlerFactory;
  * @author machengyuan @ 2018-6-12
  * @version 1.0.0
  */
-public class CanalKafkaClientFlatMessageConsumer {
+public class CanalKafkaClientFlatMessageConsumer implements CanalKafkaClientConsumer {
 
 	protected final static Logger logger = LoggerFactory.getLogger(CanalKafkaClientFlatMessageConsumer.class);
 
@@ -34,21 +34,18 @@ public class CanalKafkaClientFlatMessageConsumer {
 		}
 	};
 	
-	protected void init() {
+	public void start() {
 		try {
 			connector = new KafkaCanalConnector(
 					CanalKafkaClientConfig.getServers(), CanalKafkaClientConfig.getTopic(), 
 					CanalKafkaClientConfig.getPartition(), CanalKafkaClientConfig.getGroupId(), 
 					CanalKafkaClientConfig.getBatchSize(), true);
-			start();
 			logger.info("## the canal kafka consumer is running now ......");
 		} catch (Throwable e) {
 			logger.error("## Something goes wrong when starting up the kafka consumer:", e);
 			System.exit(0);
 		}
-	}
-
-	public void start() {
+	
 		Assert.notNull(connector, "connector is null");
 		thread = new Thread(new Runnable() {
 

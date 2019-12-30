@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.appleframework.canal</groupId>
     <artifactId>apple-canal</artifactId>
-    <version>0.2.4.RELEASE</version>
+    <version>0.0.1.RELEASE</version>
     <packaging>pom</packaging>
 
     <name>apple-canal</name>
@@ -14,16 +12,16 @@
     <properties>
         <java.version>1.8</java.version>
         <file.encoding>UTF-8</file.encoding>
-        <binlog.version>0.18.1.APPLE</binlog.version>
-        <tomcat.version>8.0.53</tomcat.version>
-        <curator.version>4.0.1</curator.version>
-        <zookeeper.version>[3.4.14,)</zookeeper.version>
+       	<canal.version>1.1.4</canal.version>
+       	<kafka.version>0.11.0.3</kafka.version>
+       	<spring.version>5.2.1.RELEASE</spring.version>
     </properties>
 
     <modules>
         <module>apple-canal-core</module>
         <module>apple-canal-kafka</module>
-    </modules>
+        <module>apple-canal-starter</module>
+  	</modules>
 
     <dependencyManagement>
         <dependencies>
@@ -32,12 +30,6 @@
                 <artifactId>junit</artifactId>
                 <version>4.12</version>
                 <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>com.github.shyiko</groupId>
-                <artifactId>mysql-binlog-connector-java</artifactId>
-                <version>${binlog.version}</version>
             </dependency>
 
             <dependency>
@@ -59,43 +51,81 @@
                 <version>4.3.9.RELEASE</version>
                 <scope>test</scope>
             </dependency>
+            
+         	<dependency>
+	  			<groupId>com.alibaba.otter</groupId>
+	  			<artifactId>canal.protocol</artifactId>
+	  			<version>${canal.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.alibaba.otter</groupId>
+				<artifactId>canal.client</artifactId>
+				<version>${canal.version}</version>
+			</dependency>
+		
+			<dependency>
+	  			<groupId>org.apache.kafka</groupId>
+	  			<artifactId>kafka-clients</artifactId>
+	  			<version>${kafka.version}</version>
+	  			<scope>provided</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
 
-            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>8.0.12</version>
-            </dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
 
-            <dependency>
-                <groupId>org.apache.tomcat</groupId>
-                <artifactId>tomcat-jdbc</artifactId>
-                <version>${tomcat.version}</version>
-                <scope>provided</scope>
-            </dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
 
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>apple-binlog-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.curator</groupId>
-                <artifactId>curator-framework</artifactId>
-                <version>${curator.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.curator</groupId>
-                <artifactId>curator-recipes</artifactId>
-                <version>${curator.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.zookeeper</groupId>
-                <artifactId>zookeeper</artifactId>
-                <version>${zookeeper.version}</version>
-                <scope>provided</scope>
-            </dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-configuration-processor</artifactId>
+				<version>2.2.1.RELEASE</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-autoconfigure</artifactId>
+				<version>2.2.1.RELEASE</version>
+				<scope>provided</scope>
+			</dependency>
+
         </dependencies>
     </dependencyManagement>
 

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.appleframework.canal.starter.CanalKafkaClientConsumerAutoConfiguration,\
+com.appleframework.canal.starter.EventDataHandlerRegistAutoConfiguration

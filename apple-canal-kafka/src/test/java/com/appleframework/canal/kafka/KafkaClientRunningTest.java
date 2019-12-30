@@ -11,10 +11,10 @@ public class KafkaClientRunningTest {
     public static void main(String[] args) {
     	CanalKafkaClientConfig.setServers("middleware02:9092");
     	CanalKafkaClientConfig.setGroupId("apple");
-    	CanalKafkaClientConfig.setTopic("test");
+    	CanalKafkaClientConfig.setTopic("example-2");
     	
-    	CanalKafkaClientFlatMessageConsumer consumer = new CanalKafkaClientFlatMessageConsumer();
-    	consumer.init();
+    	CanalKafkaClientConsumer consumer = new CanalKafkaClientFlatMessageConsumer();
+    	consumer.start();
 	}
 
 
