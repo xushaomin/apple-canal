@@ -13,7 +13,6 @@ public class CanalKafkaClientConfig {
 	private static String groupId = null;
 	private static String servers = null;
 	private static Integer batchSize = null;
-	
 
 	public static String getTopic() {
 		return topic;
@@ -54,5 +53,5 @@ public class CanalKafkaClientConfig {
 	public static void setBatchSize(Integer batchSize) {
 		CanalKafkaClientConfig.batchSize = batchSize;
 	}
-
+	
 }
