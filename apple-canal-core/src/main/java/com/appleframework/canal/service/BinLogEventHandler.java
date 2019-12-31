@@ -30,6 +30,13 @@ public abstract class BinLogEventHandler {
 		}
 	}
 	
+	public void handle(Message message) {
+		EventBaseDTO eventBaseDTO = formatData(message);
+		if(null != eventBaseDTO) {
+			EventDataHandlerFactory.handle(eventBaseDTO);
+		}
+	}
+	
 	public List<EventDataDTO> formatEventData(FlatMessageJson message) {
 		EventBaseDTO eventBaseDTO = formatData(message);
 		if(null != eventBaseDTO) {

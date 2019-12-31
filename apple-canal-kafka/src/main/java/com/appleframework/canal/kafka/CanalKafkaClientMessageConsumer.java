@@ -9,6 +9,8 @@ import org.springframework.util.Assert;
 
 import com.alibaba.otter.canal.client.kafka.KafkaCanalConnector;
 import com.alibaba.otter.canal.protocol.CanalEntry;
+import com.appleframework.canal.service.BinLogEventHandler;
+import com.appleframework.canal.service.BinLogEventHandlerFactory;
 import com.alibaba.otter.canal.protocol.Message;
 
 /**
@@ -78,7 +80,6 @@ public class CanalKafkaClientMessageConsumer implements CanalKafkaClientConsumer
 			} catch (InterruptedException e) {
 			}
 		}
-
 		while (running) {
 			try {
 				connector.connect();
@@ -117,12 +118,13 @@ public class CanalKafkaClientMessageConsumer implements CanalKafkaClientConsumer
 		connector.disconnect();
 	}
 	
-    public void handleMessage(Message message) {
+	public  void handleMessage(Message message) {
         List<CanalEntry.Entry> entries = message.getEntries();
         for (CanalEntry.Entry entry : entries) {
             if (entry.getEntryType().equals(CanalEntry.EntryType.ROWDATA)) {
-                try {
-
+                try {                	
+					BinLogEventHandler eventHandler = BinLogEventHandlerFactory.getHandler(entry.getHeader().getEventType());
+					eventHandler.handle(message);
                 } catch (Exception e) {
                     throw new RuntimeException("parse event has an error , data:" + entry.toString(), e);
                 }
